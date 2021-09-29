@@ -4,8 +4,8 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const products = await Products.getAllProducts();
-    res.status(200).json(products);
+    const categories = await Products.getAllCategories();
+    res.status(200).json(categories);
   } catch (err) {
     next(err);
   }
