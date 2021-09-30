@@ -2,9 +2,8 @@ const db = require("../data/db-config");
 
 const getAllCategories = async () => {
   const orders = await db("orders as o")
-    .select("o.order_id", "op.*", "p.price")
-    .join("orders_products as op", "op.order_id", "o.order_id")
-    .join("products as p", "p.product_id", "op.product_id");
+    .select("o.order_id", "op.*")
+    .join("orders_products as op", "op.order_id", "o.order_id");
   const categories = await db("categories");
   const products = await db("products as p");
   const images = await db("images");
@@ -16,7 +15,7 @@ const getAllCategories = async () => {
       return order.product_id === prod.product_id;
     });
     prod.orders.forEach((order) => {
-      sales = sales + order.price * order.quantity;
+      sales = sales + order.soldFor * order.quantity;
       quantitySold = quantitySold + order.quantity;
     });
     prod.images = images.filter((img) => img.product_id === prod.product_id);
@@ -35,4 +34,9 @@ const getAllCategories = async () => {
   return categories;
 };
 
-module.exports = { getAllCategories };
+const addNewProduct = async (newProd) => {
+  await db("products").insert(newProd);
+  return await getAllCategories();
+};
+
+module.exports = { getAllCategories, addNewProduct };

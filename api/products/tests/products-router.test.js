@@ -17,15 +17,50 @@ it("sanity check", () => {
   expect(true).not.toBe(false);
 });
 
-describe("[GET] /api/products", () => {
-  test("returns a list of categories", async () => {
-    const response = await request(server).get("/api/products");
-    expect(response.body).toHaveLength(4);
-    expect(response.body[0]).toHaveProperty("category_name");
-    expect(response.body[3]).toHaveProperty("products");
+describe("productsRouter", () => {
+  describe("[GET] /api/products/categories", () => {
+    test("returns a list of categories", async () => {
+      const response = await request(server).get("/api/products/categories");
+      expect(response.body).toHaveLength(4);
+      expect(response.body[0]).toHaveProperty("category_name");
+      expect(response.body[3]).toHaveProperty("products");
+    });
+    test("returns a status 200", async () => {
+      const response = await request(server).get("/api/products/categories");
+      expect(response.status).toBe(200);
+    });
   });
-  test("returns a status 200", async () => {
-    const response = await request(server).get("/api/products");
-    expect(response.status).toBe(200);
+
+  describe("[POST] /api/products", () => {
+    test("adds a new product", async () => {
+      const newProd = {
+        name: "testName",
+        description: "testDescription",
+        price: 9.99,
+        featured: false,
+        smells_like: "testSmell",
+        exfoliation: "Light",
+        inventory: 100,
+        category: 4,
+      };
+      await request(server).post("/api/products").send(newProd);
+      expect(await db("products")).toHaveLength(7);
+    });
+    test("returns a status 201", async () => {
+      const newProd = {
+        name: "testName",
+        description: "testDescription",
+        price: 9.99,
+        featured: false,
+        smells_like: "testSmell",
+        exfoliation: "Light",
+        inventory: 100,
+        category: 4,
+      };
+      const response = await request(server)
+        .post("/api/products")
+        .send(newProd);
+      expect(response.status).toBe(201);
+    });
   });
 });

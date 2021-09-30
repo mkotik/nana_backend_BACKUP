@@ -18,6 +18,7 @@ exports.up = async function (knex) {
       .onUpdate("CASCADE")
       .onDelete("CASCADE");
     tbl.integer("quantity").unsigned().notNullable();
+    tbl.float("soldFor").unsigned().notNullable();
   });
 };
 

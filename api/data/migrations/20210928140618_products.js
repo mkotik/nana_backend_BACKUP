@@ -4,7 +4,7 @@ exports.up = async function (knex) {
     tbl.string("name").notNullable();
     tbl.string("description");
     tbl.float("price").notNullable();
-    tbl.boolean("featured").defaultTo("true");
+    tbl.boolean("featured").defaultTo("false");
     tbl.string("smells_like");
     tbl.string("exfoliation");
     tbl.integer("inventory");
