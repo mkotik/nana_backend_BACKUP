@@ -12,8 +12,14 @@ router.get("/categories", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
+  const newProd = req.body;
+  const img = req.body.image;
+  delete newProd.image;
   try {
-    const response = await Products.addNewProduct(req.body);
+    const response = await Products.addNewProduct(newProd);
+    if (img) {
+      await Products.addNewImage(img);
+    }
     res.status(201).json(response);
   } catch (err) {
     next(err);

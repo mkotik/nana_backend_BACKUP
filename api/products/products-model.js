@@ -39,4 +39,9 @@ const addNewProduct = async (newProd) => {
   return await getAllCategories();
 };
 
-module.exports = { getAllCategories, addNewProduct };
+const addNewImage = async (image) => {
+  await db("images").insert(image);
+  return getAllCategories();
+};
+
+module.exports = { getAllCategories, addNewProduct, addNewImage };

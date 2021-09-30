@@ -87,4 +87,37 @@ describe("products-model", () => {
       expect(newlyMadeProd.exfoliation).toBe(null);
     });
   });
+
+  describe("addNewImage", () => {
+    test("adds a new Image", async () => {
+      const image = {
+        image_url: "www.aws.com/image/test",
+        primary: false,
+        product_id: 1,
+      };
+      await Products.addNewImage(image);
+      const images = await db("images");
+      expect(images).toHaveLength(7);
+    });
+    test("returns the categories with new img", async () => {
+      const image = {
+        image_url: "www.aws.com/image/test",
+        primary: true,
+        product_id: 1,
+      };
+      const response = await Products.addNewImage(image);
+      expect(response).toHaveLength(4);
+      expect(response[0].products[0].product_id).toBe(1);
+      expect(response[0].products[0].images).toHaveLength(2);
+      expect(response[0].products[0].images[1].primary).toBe(true);
+    });
+    test("defaults to primary => false", async () => {
+      const image = {
+        image_url: "www.aws.com/image/test",
+        product_id: 1,
+      };
+      const response = await Products.addNewImage(image);
+      expect(response[0].products[0].images[1].primary).toBe(false);
+    });
+  });
 });
