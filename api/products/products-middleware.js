@@ -29,7 +29,10 @@ const checkProdIdExists = async (req, res, next) => {
     if (product) {
       next();
     } else {
-      next({ status: 404, message: "product Id does not exist" });
+      next({
+        status: 404,
+        message: "Product ID does not exist. Try Refreshing.",
+      });
     }
   } catch (err) {
     next(err);

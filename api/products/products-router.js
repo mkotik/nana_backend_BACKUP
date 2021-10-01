@@ -1,5 +1,6 @@
 const express = require("express");
 const Products = require("./products-model");
+const s3 = require("./s3");
 const {
   categoryNameToId,
   checkPriceInventoryType,
@@ -39,6 +40,11 @@ router.delete("/:id", checkProdIdExists, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+router.get("/s3Url", (req, res) => {
+  const url = s3.generateUploadURL();
+  res.status(200).json({ link: url });
 });
 
 module.exports = router;
