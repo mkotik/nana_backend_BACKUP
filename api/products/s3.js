@@ -1,9 +1,10 @@
 const aws = require("aws-sdk");
-// import aws from "aws-sdk";
+const dotenv = require('dotenv')
 const crypto = require("crypto");
 const { promisify } = require("util");
-// import crypto from "crypto";
-// import { promisify } from "util";
+const randomBytes = promisify(crypto.randomBytes)
+
+dotenv.config()
 
 const region = "us-east-2"; //region the bucket exists in
 const bucketName = "nana-soaps-products"; //name of the bucket
@@ -14,13 +15,13 @@ const s3 = new aws.S3({
   region,
   accessKeyId,
   secretAccessKey,
-  signatureVersion: "4",
+  signatureVersion: "v4",
 });
 
 async function generateUploadURL() {
-  //   const rawBytes = await crypto.randomBytes(16);
-  //   const imageName = rawBytes.toString("hex");
-  const imageName = "random image name";
+    const rawBytes = await randomBytes(16);
+    const imageName = rawBytes.toString("hex");
+  // const imageName = "random image name";
 
   const params = {
     Bucket: bucketName,
