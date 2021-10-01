@@ -120,4 +120,15 @@ describe("products-model", () => {
       expect(response[0].products[0].images[1].primary).toBe(false);
     });
   });
+
+  describe("removeProduct", () => {
+    test("removes a product", async () => {
+      await Products.removeProduct("2");
+      expect(await db("products")).toHaveLength(5);
+    });
+    test("returns 4 categories", async () => {
+      const response = await Products.removeProduct("2");
+      expect(response).toHaveLength(4);
+    });
+  });
 });

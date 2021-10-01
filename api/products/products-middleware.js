@@ -13,4 +13,31 @@ const categoryNameToId = async (req, res, next) => {
   }
 };
 
-module.exports = { categoryNameToId };
+const checkPriceInventoryType = async (req, res, next) => {
+  const { price, inventory } = req.body;
+  if (typeof price !== "number" || typeof inventory !== "number") {
+    next({ status: 400, message: "Price and Inventory must be numbers" });
+  } else {
+    next();
+  }
+};
+
+const checkProdIdExists = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const product = await db("products").where("product_id", id).first();
+    if (product) {
+      next();
+    } else {
+      next({ status: 404, message: "product Id does not exist" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  categoryNameToId,
+  checkPriceInventoryType,
+  checkProdIdExists,
+};

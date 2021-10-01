@@ -78,5 +78,38 @@ describe("productsRouter", () => {
         .send(newProd);
       expect(response.status).toBe(404);
     });
+    test("returns 400 on non-number price and inventory", async () => {
+      const newProd = {
+        name: "testName",
+        description: "testDescription",
+        price: "string",
+        featured: false,
+        smells_like: "testSmell",
+        exfoliation: "Light",
+        inventory: "string",
+        category: "Gift Boxes",
+      };
+      const response = await request(server)
+        .post("/api/products")
+        .send(newProd);
+      expect(response.status).toBe(400);
+    });
+  });
+
+  describe("[DELETE] /api/products/:id", () => {
+    test("deletes a product", async () => {
+      await request(server).delete("/api/products/3");
+      const products = await db("products");
+      expect(products).toHaveLength(5);
+    });
+    test("returns 4 categories with one less product", async () => {
+      const response = await request(server).delete("/api/products/3");
+      expect(response.body).toHaveLength(4);
+      expect(response.body[1].products).toHaveLength(1);
+    });
+    test("returns 404 on invalid id", async () => {
+      const response = await request(server).delete("/api/products/999");
+      expect(response.status).toBe(404);
+    });
   });
 });

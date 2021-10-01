@@ -39,9 +39,19 @@ const addNewProduct = async (newProd) => {
   return await getAllCategories();
 };
 
+const removeProduct = async (prodId) => {
+  const deleted = await db("products").where("product_id", prodId).del();
+  return await getAllCategories();
+};
+
 const addNewImage = async (image) => {
   await db("images").insert(image);
   return getAllCategories();
 };
 
-module.exports = { getAllCategories, addNewProduct, addNewImage };
+module.exports = {
+  getAllCategories,
+  addNewProduct,
+  addNewImage,
+  removeProduct,
+};
