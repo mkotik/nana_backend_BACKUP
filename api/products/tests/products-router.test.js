@@ -41,7 +41,7 @@ describe("productsRouter", () => {
         smells_like: "testSmell",
         exfoliation: "Light",
         inventory: 100,
-        category: 4,
+        category: "Body Bars",
       };
       await request(server).post("/api/products").send(newProd);
       expect(await db("products")).toHaveLength(7);
@@ -55,12 +55,28 @@ describe("productsRouter", () => {
         smells_like: "testSmell",
         exfoliation: "Light",
         inventory: 100,
-        category: 4,
+        category: "Gift Boxes",
       };
       const response = await request(server)
         .post("/api/products")
         .send(newProd);
       expect(response.status).toBe(201);
+    });
+    test("returns a 404 on invalid category", async () => {
+      const newProd = {
+        name: "testName",
+        description: "testDescription",
+        price: 9.99,
+        featured: false,
+        smells_like: "testSmell",
+        exfoliation: "Light",
+        inventory: 100,
+        category: "Gift Packs",
+      };
+      const response = await request(server)
+        .post("/api/products")
+        .send(newProd);
+      expect(response.status).toBe(404);
     });
   });
 });

@@ -1,5 +1,6 @@
 const express = require("express");
 const Products = require("./products-model");
+const { categoryNameToId } = require("./products-middleware");
 const router = express.Router();
 
 router.get("/categories", async (req, res, next) => {
@@ -11,15 +12,10 @@ router.get("/categories", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  const newProd = req.body;
-  const img = req.body.image;
-  delete newProd.image;
+router.post("/", categoryNameToId, async (req, res, next) => {
+  const newProd = { ...req.body, category: req.category };
   try {
     const response = await Products.addNewProduct(newProd);
-    if (img) {
-      await Products.addNewImage(img);
-    }
     res.status(201).json(response);
   } catch (err) {
     next(err);
