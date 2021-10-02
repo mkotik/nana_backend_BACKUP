@@ -163,7 +163,6 @@ describe("products-model", () => {
       const updatedProd = response[1].products.find(
         (cur) => cur.product_id == 1
       );
-      console.log(updatedProd);
       expect(response).toHaveLength(4);
       expect(updatedProd).toBeTruthy();
       expect(updatedProd.inventory).toBe(15);

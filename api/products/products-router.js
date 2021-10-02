@@ -44,9 +44,11 @@ router.delete("/:id", checkProdIdExists, async (req, res, next) => {
 
 router.put(
   "/:id",
-  /*checkProdIdExists,*/ async (req, res, next) => {
+  checkProdIdExists,
+  categoryNameToId,
+  async (req, res, next) => {
     const { id } = req.params;
-    const updatedProd = { ...req.body };
+    const updatedProd = { ...req.body, category: req.category };
     try {
       const response = await Products.updateProduct(id, updatedProd);
       res.status(200).json(response);
