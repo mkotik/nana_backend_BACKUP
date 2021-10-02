@@ -42,9 +42,10 @@ router.delete("/:id", checkProdIdExists, async (req, res, next) => {
   }
 });
 
-router.get("/s3Url", async (req, res, next) => {
+router.post("/s3Url", async (req, res, next) => {
+  const {imgName} = req.body
   try{
-    const url = await generateUploadURL();
+    const url = await generateUploadURL(imgName);
   res.status(200).send({url})
   }
   catch(err){

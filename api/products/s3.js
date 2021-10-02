@@ -18,10 +18,10 @@ const s3 = new aws.S3({
   signatureVersion: "v4",
 });
 
-async function generateUploadURL() {
+async function generateUploadURL(imgName) {
     // const rawBytes = await randomBytes(16);
     // const imageName = rawBytes.toString("hex");
-  const imageName = "random image name";
+  const imageName = imgName;
 
   const params = {
     Bucket: bucketName,
