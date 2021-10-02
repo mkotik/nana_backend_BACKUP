@@ -46,6 +46,7 @@ router.put(
   "/:id",
   checkProdIdExists,
   categoryNameToId,
+  checkPriceInventoryType,
   async (req, res, next) => {
     const { id } = req.params;
     const updatedProd = { ...req.body, category: req.category };
