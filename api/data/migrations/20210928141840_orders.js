@@ -1,6 +1,7 @@
 exports.up = async function (knex) {
   await knex.schema.createTable("orders", (tbl) => {
     tbl.increments("order_id");
+    tbl.timestamp("created_at").defaultTo(knex.fn.now());
     tbl.string("first_name").notNullable();
     tbl.string("last_name").notNullable();
     tbl.string("email").notNullable();
@@ -18,6 +19,9 @@ exports.up = async function (knex) {
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
     tbl.string("status").notNullable();
+    tbl.boolean("paid").defaultTo("false");
+    tbl.float("tax");
+    tbl.string("notes");
     tbl.string("billing_city").notNullable();
     tbl.string("billing_state").notNullable();
     tbl.string("billing_address").notNullable();
