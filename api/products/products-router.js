@@ -1,6 +1,6 @@
 const express = require("express");
 const Products = require("./products-model");
-const {generateUploadURL} = require("./s3");
+const { generateUploadURL } = require("./s3");
 const {
   categoryNameToId,
   checkPriceInventoryType,
@@ -42,14 +42,29 @@ router.delete("/:id", checkProdIdExists, async (req, res, next) => {
   }
 });
 
-router.post("/s3Url", async (req, res, next) => {
-  const {imgName} = req.body
-  try{
-    const url = await generateUploadURL(imgName);
-  res.status(200).send({url})
+router.put(
+  "/:id",
+  checkProdIdExists,
+  categoryNameToId,
+  async (req, res, next) => {
+    const { id } = req.params;
+    const updatedProd = { ...req.body, category: req.category };
+    try {
+      const response = await Products.updateProduct(id, updatedProd);
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
   }
-  catch(err){
-    next(err)
+);
+
+router.post("/s3Url", async (req, res, next) => {
+  const { imgName } = req.body;
+  try {
+    const url = await generateUploadURL(imgName);
+    res.status(200).send({ url });
+  } catch (err) {
+    next(err);
   }
 });
 

@@ -112,4 +112,39 @@ describe("productsRouter", () => {
       expect(response.status).toBe(404);
     });
   });
+
+  describe("[PUT] /api/products/:id", () => {
+    test("returns 4 categories with updated product", async () => {
+      const updates = { name: "testName", price: 100 };
+      const response = await request(server)
+        .put("/api/products/1")
+        .send(updates);
+      console.log(response.body);
+      const updatedProd = response.body[0].products.find(
+        (prod) => prod.product_id == "1"
+      );
+      expect(response.body).toHaveLength(4);
+      expect(response.body[0].products).toHaveLength(2);
+      expect(updatedProd.name).toBe("testName");
+      expect(updatedProd.price).toBe(100);
+    });
+    test("returns 404 on invalid ID", async () => {
+      const updates = { name: "testName", price: 100 };
+      const response = await request(server)
+        .put("/api/products/99")
+        .send(updates);
+      expect(response.status).toBe(404);
+    });
+    test("successfully updates category", async () => {
+      const updates = { category: "Gift Boxes" };
+      const response = await request(server)
+        .put("/api/products/1")
+        .send(updates);
+      const updatedProd = response.body[3].products.find(
+        (prod) => prod.product_id == "1"
+      );
+      expect(response.status).toBe(200);
+      expect(updatedProd.category).toBe(4);
+    });
+  });
 });
