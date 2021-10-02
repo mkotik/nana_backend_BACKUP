@@ -44,6 +44,11 @@ const removeProduct = async (prodId) => {
   return await getAllCategories();
 };
 
+const updateProduct = async (prodId, updatedProd) => {
+  await db("products").where("product_id", prodId).update(updatedProd);
+  return await getAllCategories();
+};
+
 const addNewImage = async (image) => {
   await db("images").insert(image);
   return getAllCategories();
@@ -54,4 +59,5 @@ module.exports = {
   addNewProduct,
   addNewImage,
   removeProduct,
+  updateProduct,
 };

@@ -131,4 +131,44 @@ describe("products-model", () => {
       expect(response).toHaveLength(4);
     });
   });
+
+  describe("updateProduct", () => {
+    test("updates a product name", async () => {
+      await Products.updateProduct("1", { name: "testName" });
+      const updatedProd = await db("products").where("product_id", "1").first();
+      expect(updatedProd.name).toBe("testName");
+    });
+    test("updates a product price and category", async () => {
+      await Products.updateProduct("1", {
+        price: 12.99,
+        category: 4,
+      });
+      const updatedProd = await db("products").where("product_id", "1").first();
+      expect(updatedProd.price).toBe(12.99);
+      expect(updatedProd.category).toBe(4);
+    });
+    test("does not change the amount of products", async () => {
+      await Products.updateProduct("1", {
+        price: 12.99,
+        category: 4,
+      });
+      const products = await db("products");
+      expect(products).toHaveLength(6);
+    });
+    test("returns 4 categories with updated product", async () => {
+      const response = await Products.updateProduct("1", {
+        inventory: 15,
+        category: 2,
+      });
+      const updatedProd = response[1].products.find(
+        (cur) => cur.product_id == 1
+      );
+      console.log(updatedProd);
+      expect(response).toHaveLength(4);
+      expect(updatedProd).toBeTruthy();
+      expect(updatedProd.inventory).toBe(15);
+      expect(updatedProd.category).toBe(2);
+      expect(response[0].products).toHaveLength(1);
+    });
+  });
 });
