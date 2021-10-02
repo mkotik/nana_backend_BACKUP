@@ -19,9 +19,9 @@ const s3 = new aws.S3({
 });
 
 async function generateUploadURL() {
-    const rawBytes = await randomBytes(16);
-    const imageName = rawBytes.toString("hex");
-  // const imageName = "random image name";
+    // const rawBytes = await randomBytes(16);
+    // const imageName = rawBytes.toString("hex");
+  const imageName = "random image name";
 
   const params = {
     Bucket: bucketName,
