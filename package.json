@@ -8,7 +8,16 @@
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
-    "test": "cross-env NODE_ENV=testing jest --watchAll --verbose --runInBand"
+    "test": "cross-env NODE_ENV=testing jest --watchAll --verbose --runInBand",
+    "deploy": "git push heroku main",
+    "migrateh": "heroku run knex migrate:latest -a nana-soaps-backend",
+    "rollbackh": "heroku run knex migrate:rollback -a nana-soaps-backend",
+    "databaseh": "heroku pg:psql -a nana-soaps-backend",
+    "seedh": "heroku run knex seed:run -a nana-soaps-backend"
+  },
+  "engines": {
+    "node": "14.15.4",
+    "npm": "6.14.11"
   },
   "repository": {
     "type": "git",
